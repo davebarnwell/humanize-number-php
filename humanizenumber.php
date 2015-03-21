@@ -62,6 +62,39 @@ class HumanizeNumber {
         }
         return $int;
     }
+    
+    /**
+     * Converts a large integer to a friendly text representation, when it's longer than $shorten_when_longer chars
+     *
+     * @param      $int
+     * @param int  $decimal_places when shortend
+     * @param int  $shorten_when_longer
+     * @param bool $compact
+     * @return string
+     */
+    public function intwordover($int, $decimal_places = 0, $shorten_when_longer = 5, $compact = false) {
+        if($compact)
+        {
+            $array = $this->abbreviations;
+            $spacer = null;
+        }
+        else
+        {
+            $array = $this->magnitudes;
+            $spacer = ' ';
+        }
+        if (strlen(number_format($int,0)) <= $shorten_when_longer) {
+          return number_format($int);
+        }
+        foreach($array as $exponent => $suffix)
+        {
+            if($int >= pow(10, $exponent))
+            {
+                return round(floatval($int / pow(10, $exponent)), $decimal_places) . $spacer . $suffix;
+            }
+        }
+        return $int;
+    }
 
     /**
      * Return AP formatted numbers, use words for numbers less than 10.
@@ -111,11 +144,12 @@ class HumanizeNumber {
      * Converts an integer into a compact representation.
      *
      * @param     $int
+     * @param int $shorten_when_longer if the int with commas is longer than this shorten
      * @param int $decimal_places
      * @return string
      */
-    public function compactinteger($int, $decimal_places = 0) {
-        return $this->intword($int, $decimal_places, true);
+    public function compactinteger($int, $decimal_places = 0, $shorten_when_longer = 5) {
+        return $this->intwordover($int, $decimal_places, $shorten_when_longer, true);
     }
 
     /**
