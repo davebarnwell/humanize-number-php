@@ -21,7 +21,7 @@ class HumanizeNumber {
         0  => ''
     );
     protected $lowercase_words = array(
-        'a','an','and','at','but','by','de','en','for','if','in','of','on','or','the','to','via','vs'
+        'a', 'an', 'and', 'at', 'but', 'by', 'de', 'en', 'for', 'if', 'in', 'of', 'on', 'or', 'the', 'to', 'via', 'vs'
     );
 
     /**
@@ -41,14 +41,14 @@ class HumanizeNumber {
      * @return void
      */
     private function initParams($compact) {
-        if($compact) {
+        if ($compact) {
             $array = $this->abbreviations;
             $spacer = null;
         } else {
             $array = $this->magnitudes;
             $spacer = ' ';
         }
-        return [$array,$spacer];
+        return [$array, $spacer];
     }
 
     /**
@@ -60,10 +60,10 @@ class HumanizeNumber {
      * @return string
      */
     public function intword($int, $decimal_places = 0, $compact = false) {
-        list($array,$spacer) = $this->initParams($compact);
-        foreach($array as $exponent => $suffix)
+        list($array, $spacer) = $this->initParams($compact);
+        foreach ($array as $exponent => $suffix)
         {
-            if($int >= pow(10, $exponent))
+            if ($int >= pow(10, $exponent))
             {
                 return round(floatval($int / pow(10, $exponent)), $decimal_places) . $spacer . $suffix;
             }
@@ -81,13 +81,13 @@ class HumanizeNumber {
      * @return string
      */
     public function intwordover($int, $decimal_places = 0, $shorten_when_longer = 5, $compact = false) {
-        list($array,$spacer) = $this->initParams($compact);
-        if (strlen(number_format($int,0)) <= $shorten_when_longer) {
+        list($array, $spacer) = $this->initParams($compact);
+        if (strlen(number_format($int, 0)) <= $shorten_when_longer) {
           return number_format($int);
         }
-        foreach($array as $exponent => $suffix)
+        foreach ($array as $exponent => $suffix)
         {
-            if($int >= pow(10, $exponent))
+            if ($int >= pow(10, $exponent))
             {
                 return round(floatval($int / pow(10, $exponent)), $decimal_places) . $spacer . $suffix;
             }
@@ -124,9 +124,9 @@ class HumanizeNumber {
      * @return string
      */
     public function ordinal($number) {
-        $ends = array('th','st','nd','rd','th','th','th','th','th','th');
+        $ends = array('th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th');
         $mod100 = $number % 100;
-        return $number . ($mod100 >= 11 && $mod100 <= 13 ? 'th' :  $ends[$number % 10]);
+        return $number . ($mod100 >= 11 && $mod100 <= 13 ? 'th' : $ends[$number % 10]);
     }
 
     /**
@@ -159,7 +159,7 @@ class HumanizeNumber {
      * @return string
      */
     public function boundednumber($value, $max) {
-        if($value > $max) return $max . '+';
+        if ($value > $max) return $max . '+';
         return $value;
     }
 
@@ -172,7 +172,7 @@ class HumanizeNumber {
      */
     public function times($value, $overrides = []) {
         $return_value = isset($overrides[$value]) ? $overrides[$value] : $value;
-        switch($value) {
+        switch ($value) {
             case 0:
                 return 'never';
             case 1:
@@ -199,28 +199,22 @@ class HumanizeNumber {
         if ($bytes >= $bytes_in_tb)
         {
             $bytes = number_format($bytes / $bytes_in_tb, $decimal_places) . ' TB';
-        }
-        elseif ($bytes >= $bytes_in_gb)
+        } elseif ($bytes >= $bytes_in_gb)
         {
             $bytes = number_format($bytes / $bytes_in_gb, $decimal_places) . ' GB';
-        }
-        elseif ($bytes >= $bytes_in_mb)
+        } elseif ($bytes >= $bytes_in_mb)
         {
             $bytes = number_format($bytes / $bytes_in_mb, $decimal_places) . ' MB';
-        }
-        elseif ($bytes >= $bytes_in_kb)
+        } elseif ($bytes >= $bytes_in_kb)
         {
             $bytes = number_format($bytes / $bytes_in_kb, $decimal_places) . ' KB';
-        }
-        elseif ($bytes > 1)
+        } elseif ($bytes > 1)
         {
             $bytes = $bytes . ' bytes';
-        }
-        elseif ($bytes == 1)
+        } elseif ($bytes == 1)
         {
             $bytes = $bytes . ' byte';
-        }
-        else
+        } else
         {
             $bytes = '0 bytes';
         }
