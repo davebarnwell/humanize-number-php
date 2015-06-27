@@ -35,6 +35,23 @@ class HumanizeNumber {
     }
 
     /**
+     * Setup spacers and 
+     *
+     * @param bool $compact 
+     * @return void
+     */
+    private function initParams($compact) {
+        if($compact) {
+            $array = $this->abbreviations;
+            $spacer = null;
+        } else {
+            $array = $this->magnitudes;
+            $spacer = ' ';
+        }
+        return [$array,$spacer];
+    }
+
+    /**
      * Converts a large integer to a friendly text representation.
      *
      * @param      $int
@@ -43,16 +60,7 @@ class HumanizeNumber {
      * @return string
      */
     public function intword($int, $decimal_places = 0, $compact = false) {
-        if($compact)
-        {
-            $array = $this->abbreviations;
-            $spacer = null;
-        }
-        else
-        {
-            $array = $this->magnitudes;
-            $spacer = ' ';
-        }
+        list($array,$spacer) = $this->initParams($compact);
         foreach($array as $exponent => $suffix)
         {
             if($int >= pow(10, $exponent))
@@ -73,16 +81,7 @@ class HumanizeNumber {
      * @return string
      */
     public function intwordover($int, $decimal_places = 0, $shorten_when_longer = 5, $compact = false) {
-        if($compact)
-        {
-            $array = $this->abbreviations;
-            $spacer = null;
-        }
-        else
-        {
-            $array = $this->magnitudes;
-            $spacer = ' ';
-        }
+        list($array,$spacer) = $this->initParams($compact);
         if (strlen(number_format($int,0)) <= $shorten_when_longer) {
           return number_format($int);
         }
